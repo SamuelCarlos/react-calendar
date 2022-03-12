@@ -1,4 +1,4 @@
-import React from 'react'
+import { Button as ChakraButton } from '@chakra-ui/react'
 
 interface ButtonProps {
   onClick: () => void
@@ -8,5 +8,5 @@ interface ButtonProps {
 export default function Button(props: ButtonProps) {
   const { onClick, children } = props
 
-  return <button onClick={onClick}>{children}</button>
+  return <ChakraButton onClick={onClick}>{children}</ChakraButton>
 }
