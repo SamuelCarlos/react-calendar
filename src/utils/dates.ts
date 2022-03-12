@@ -16,3 +16,7 @@ export const daysInMonth = (date: Date) => {
 export const firstDayOfMonth = (date: Date): WeekDays => {
   return format(startOfMonth(date), 'EEEE') as WeekDays
 }
+
+export const deserializeDate = (date: Date) => {
+  return date.toISOString()
+}
