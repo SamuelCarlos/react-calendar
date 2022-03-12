@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from 'app/hooks'
 import { changeDay } from './calendar-slice'
 
 export default function Calendar() {
-  const today = useAppSelector((state) => state.calendar.selectedDay)
+  const selectedDay = useAppSelector((state) => state.calendar.selectedDay)
   const dispatch = useAppDispatch()
 
   const handleClick = (date: Date) => {
@@ -15,7 +15,7 @@ export default function Calendar() {
   return (
     <div data-testid="calendar">
       Hi, this is my calendar, today is{' '}
-      {`${new Date(today).toLocaleDateString('en-US')}`}
+      {`${new Date(selectedDay).toLocaleDateString('en-US')}`}
       <Button onClick={() => handleClick(new Date('11/11/1998'))}>
         11/11/1998
       </Button>

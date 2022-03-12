@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import Counter from '../Counter'
 import { Link } from 'react-router-dom'
@@ -13,6 +13,7 @@ export default function Readme() {
     fetch(README_PATH, { mode: 'cors' })
       .then((response) => response.text())
       .then((response) => {
+        console.log(response)
         setMd(`${response}
 
 ## About Unit Tests:

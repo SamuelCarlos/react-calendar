@@ -1,5 +1,3 @@
-import { Button as ChakraButton } from '@chakra-ui/react'
-
 interface ButtonProps {
   onClick: () => void
   children: React.ReactNode
@@ -8,5 +6,5 @@ interface ButtonProps {
 export default function Button(props: ButtonProps) {
   const { onClick, children } = props
 
-  return <ChakraButton onClick={onClick}>{children}</ChakraButton>
+  return <button onClick={onClick}>{children}</button>
 }
