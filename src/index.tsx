@@ -2,8 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider as ReduxProvider } from 'react-redux'
-import getStore from './store/getStore'
-import reducers from './reducers'
+import { store } from 'app/store'
 import Main from './Main'
 import reportWebVitals from './reportWebVitals'
 
@@ -12,7 +11,7 @@ import './sass/app.scss'
 
 ReactDOM.render(
   <React.StrictMode>
-    <ReduxProvider store={getStore(reducers)}>
+    <ReduxProvider store={store}>
       <BrowserRouter>
         <Main />
       </BrowserRouter>
