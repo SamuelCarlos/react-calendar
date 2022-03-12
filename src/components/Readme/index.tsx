@@ -13,7 +13,6 @@ export default function Readme() {
     fetch(README_PATH, { mode: 'cors' })
       .then((response) => response.text())
       .then((response) => {
-        console.log(response)
         setMd(`${response}
 
 ## About Unit Tests:

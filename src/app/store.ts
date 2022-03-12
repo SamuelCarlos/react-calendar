@@ -1,9 +1,35 @@
 import { configureStore } from '@reduxjs/toolkit'
 import calendarReducer from 'components/Calendar/calendar-slice'
+import { combineReducers } from 'redux'
+import {
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER
+} from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+
+const persistConfig = {
+  key: 'root',
+  version: 1,
+  storage
+}
+
+const reducers = combineReducers({ calendar: calendarReducer })
+
+const persistedReducer = persistReducer(persistConfig, reducers)
 
 export const store = configureStore({
-  reducer: { calendar: calendarReducer },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware()
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+      }
+    })
 })
 
 export type AppDispatch = typeof store.dispatch
