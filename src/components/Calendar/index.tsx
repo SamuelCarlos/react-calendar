@@ -1,15 +1,17 @@
 import Button from 'components/Button'
-import { daysInMonth, firstDayOfMonth } from 'utils/dates'
+import { daysInMonth, deserializeDate, firstDayOfMonth } from 'utils/dates'
 import { useAppDispatch, useAppSelector } from 'app/hooks'
 import { changeDay } from './calendar-slice'
 
-export default function Calendar() {
-  const selectedDay = useAppSelector((state) => state.calendar.selectedDay)
+interface CalendarProps {
+  selectedDay: string
+}
+export default function Calendar({ selectedDay }: CalendarProps) {
   const dispatch = useAppDispatch()
 
   const handleClick = (date: Date) => {
-    const isoDate = date.toISOString()
-    dispatch(changeDay(isoDate))
+    const ISODate = deserializeDate(date)
+    dispatch(changeDay(ISODate))
   }
 
   return (

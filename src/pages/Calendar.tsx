@@ -1,13 +1,14 @@
+import { useAppSelector } from 'app/hooks'
 import Calendar from 'components/Calendar'
 
 interface CalendarProps {}
 
 export default function CalendarPage(props: CalendarProps) {
-  // your calendar implementation Goes here!
-  // Be creative
+  const selectedDay = useAppSelector((state) => state.calendar.selectedDay)
+
   return (
     <div className="container">
-      <Calendar />
+      <Calendar selectedDay={selectedDay} />
     </div>
   )
 }

@@ -3,16 +3,20 @@ import { render, screen } from '@testing-library/react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { store } from 'app/store'
 
-describe('<Calendar />', () => {
-  beforeEach(() => {
-    render(
-      <ReduxProvider store={store}>
-        <Calendar />
-      </ReduxProvider>
-    )
-  })
+describe('Calendar', () => {
+  describe('<Calendar /> component', () => {
+    beforeEach(() => {
+      const selectedDay = store.getState().calendar.selectedDay
 
-  it('should render properly', () => {
-    expect(screen.getByTestId('calendar')).toBeDefined()
+      render(
+        <ReduxProvider store={store}>
+          <Calendar selectedDay={selectedDay} />
+        </ReduxProvider>
+      )
+    })
+
+    it('should render properly', () => {
+      expect(screen.getByTestId('calendar')).toBeDefined()
+    })
   })
 })
