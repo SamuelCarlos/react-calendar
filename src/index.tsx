@@ -9,6 +9,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 // import main sass file
 import './sass/app.scss'
+
 import persistStore from 'redux-persist/es/persistStore'
 
 let persistor = persistStore(store)

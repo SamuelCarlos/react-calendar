@@ -3,19 +3,17 @@ import {
   ButtonProps as MuiButtonProps
 } from '@mui/material'
 
-interface ButtonProps {
-  onClick: () => void
-  children: React.ReactNode
+interface ButtonProps extends MuiButtonProps {
+  width?: string
 }
 
-export default function Button(props: ButtonProps) {
-  const { onClick, children, ...other } = props
+export default function Button({
+  children,
+  variant = 'contained',
+  ...otherProps
+}: ButtonProps) {
   return (
-    <MuiButton
-      onClick={onClick}
-      variant="contained"
-      {...(other as MuiButtonProps)}
-    >
+    <MuiButton variant={variant} {...otherProps}>
       {children}
     </MuiButton>
   )
