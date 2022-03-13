@@ -1,37 +1,19 @@
 import {
-  daysInMonth,
   firstDayOfMonth,
   deserializeDate,
   getMonthName,
   getYear,
-  lastDayOfMonth,
   subtractDays,
   addDays,
   equalDates
 } from './dates'
 
 describe('Dates utils', () => {
-  describe('daysInMonth()', () => {
-    it('should return 31 for days in march/2022 month', () => {
-      const days = daysInMonth(new Date('3/11/2022'))
-
-      expect(days).toBe(31)
-    })
-  })
-
   describe('firstDayOfMonth()', () => {
     it('should return the first day of march/2022 month', () => {
       const days = firstDayOfMonth(new Date('3/11/2022'))
 
       expect(days.toLocaleDateString('en-US')).toBe('3/1/2022')
-    })
-  })
-
-  describe('lastDayOfMonth()', () => {
-    it('should return the last day of march/2022 month', () => {
-      const days = lastDayOfMonth(new Date('3/11/2022'))
-
-      expect(days.toLocaleDateString('en-US')).toBe('3/31/2022')
     })
   })
 
@@ -86,6 +68,30 @@ describe('Dates utils', () => {
       const isDatesEqual = equalDates(dateLeft, dateRight)
 
       expect(isDatesEqual).toBe(true)
+    })
+    it('should return false if given days are different', () => {
+      const dateLeft = new Date('3/11/2022')
+      const dateRight = new Date('3/12/2022')
+
+      const isDatesEqual = equalDates(dateLeft, dateRight)
+
+      expect(isDatesEqual).toBe(false)
+    })
+    it('should return false if given months are different', () => {
+      const dateLeft = new Date('4/11/2022')
+      const dateRight = new Date('2/11/2022')
+
+      const isDatesEqual = equalDates(dateLeft, dateRight)
+
+      expect(isDatesEqual).toBe(false)
+    })
+    it('should return false if given years are different', () => {
+      const dateLeft = new Date('3/11/2021')
+      const dateRight = new Date('3/11/2022')
+
+      const isDatesEqual = equalDates(dateLeft, dateRight)
+
+      expect(isDatesEqual).toBe(false)
     })
   })
 })

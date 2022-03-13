@@ -1,11 +1,9 @@
 import {
-  getDaysInMonth,
   startOfMonth,
   format,
   getYear as dateFnsGetYear,
   sub,
-  add,
-  endOfMonth
+  add
 } from 'date-fns'
 
 export enum WeekDays {
@@ -35,16 +33,8 @@ export const Months = {
   12: 'Dec'
 }
 
-export const daysInMonth = (date: Date) => {
-  return getDaysInMonth(date)
-}
-
 export const firstDayOfMonth = (date: Date) => {
   return startOfMonth(date)
-}
-
-export const lastDayOfMonth = (date: Date) => {
-  return endOfMonth(date)
 }
 
 export const deserializeDate = (date: Date) => {
