@@ -9,10 +9,9 @@ import {
   equalDates,
   firstDayOfMonth,
   getMonthName,
-  lastDayOfMonth,
-  subtractDays
+  subtractDays,
+  getYear
 } from 'utils/dates'
-import { getYear, daysInMonth } from 'utils/dates'
 import { addDays } from 'date-fns'
 import { useAppDispatch } from 'app/hooks'
 import { changeDay, Reminder } from '../calendar-slice'
@@ -46,74 +45,31 @@ export default function Table({ data }: { data: TableProps }) {
   }
 
   useEffect(() => {
-    const totalDays = daysInMonth(selectedDay)
     const firstMonthDay = firstDayOfMonth(selectedDay)
-
-    let index = 0
+    const TOTAL_CALENDAR_PAGE_DAY = DAYS_IN_A_WEEK * NUMBER_OF_WEEKS
 
     if (!firstMonthDay) return
 
     const firstMonthWeekDay = firstMonthDay.getDay()
 
+    let currentDay = subtractDays(firstMonthDay, firstMonthWeekDay)
+
     const MONTH: DayData[][] = []
     let WEEK: DayData[] = []
 
-    if (firstMonthWeekDay > 1)
-      for (let i = 0; i < firstMonthWeekDay; i++) {
-        let date = subtractDays(firstMonthDay, firstMonthWeekDay - i)
-        let dateReminders
-        if (reminders && reminders.length > 0) {
-          dateReminders = reminders.filter((reminder) =>
-            equalDates(new Date(reminder.date), date)
-          )
-        }
-        WEEK.push({ date, reminders: dateReminders })
-        index++
-        if (index % 7 === 0) {
-          MONTH.push(WEEK)
-          WEEK = []
-        }
-      }
-
-    for (let i = 0; i < totalDays; i++) {
-      let date = addDays(firstMonthDay, i)
+    for (let i = 1; i <= TOTAL_CALENDAR_PAGE_DAY; i++) {
       let dateReminders
       if (reminders && reminders.length > 0) {
         dateReminders = reminders.filter((reminder) =>
-          equalDates(new Date(reminder.date), date)
+          equalDates(new Date(reminder.date), currentDay)
         )
       }
-
-      WEEK.push({ date, reminders: dateReminders })
-
-      index++
-
-      if (index % 7 === 0) {
+      WEEK.push({ date: currentDay, reminders: dateReminders })
+      if (i % 7 === 0) {
         MONTH.push(WEEK)
         WEEK = []
       }
-    }
-
-    const MAX_DAYS = NUMBER_OF_WEEKS * DAYS_IN_A_WEEK
-    const DAYS_LEFT = MAX_DAYS - index
-
-    const lastMonthDay = lastDayOfMonth(selectedDay)
-
-    for (let i = 1; i <= DAYS_LEFT; i++) {
-      let date = addDays(lastMonthDay, i)
-      let dateReminders
-      if (reminders && reminders.length > 0) {
-        dateReminders = reminders.filter((reminder) =>
-          equalDates(new Date(reminder.date), date)
-        )
-      }
-      WEEK.push({ date, reminders: dateReminders })
-
-      index++
-      if (index % 7 === 0) {
-        MONTH.push(WEEK)
-        WEEK = []
-      }
+      currentDay = addDays(currentDay, 1)
     }
 
     MONTH.push(WEEK)
@@ -127,17 +83,21 @@ export default function Table({ data }: { data: TableProps }) {
         <MuiTableRow key={`week-${weekIndex}`}>
           {week.map((day, dayIndex) => {
             const selected = equalDates(day.date, selectedDay)
+
             return (
               <S.TableCell
                 key={`day-${dayIndex}`}
-                className={
+                className={`${selected ? 'selected' : ''} ${
                   getMonthName(day.date) !== getMonthName(selectedDay)
-                    ? `dark ${selected ? 'selected' : ''}`
-                    : `light ${selected ? 'selected' : ''}`
-                }
-                onClick={() => handleSelectDate(day.date)}
+                    ? 'dark'
+                    : 'light'
+                }`}
               >
-                <TableCell data={day} selected={selected} />
+                <TableCell
+                  data={day}
+                  selected={selected}
+                  handleSelect={handleSelectDate}
+                />
               </S.TableCell>
             )
           })}
