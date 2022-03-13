@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid'
 
-interface ReminderCreatePayload {
+export interface ReminderCreatePayload {
   date: string
   text: string
   city: string
@@ -27,28 +27,28 @@ const initialState: CalendarState = {
     {
       id: uuidv4(),
       date: new Date('3/14/2022').toISOString(),
-      text: 'Antother one for me',
+      text: 'Cut hair',
       city: 'Cariacica',
       color: getRandomColor()
     },
     {
       id: uuidv4(),
       date: new Date().toISOString(),
-      text: 'New Reminder for me',
+      text: 'Doctor',
       city: 'Cariacica',
       color: getRandomColor()
     },
     {
       id: uuidv4(),
       date: new Date().toISOString(),
-      text: 'Other? for me',
+      text: 'Wash car',
       city: 'Cariacica',
       color: getRandomColor()
     },
     {
       id: uuidv4(),
       date: new Date().toISOString(),
-      text: 'Nicee for me',
+      text: 'Pay internet bill',
       city: 'Cariacica',
       color: getRandomColor()
     }
@@ -64,6 +64,11 @@ const calendarSlice = createSlice({
 
       return state
     },
+    returnToToday(state) {
+      state.selectedDay = new Date().toISOString()
+
+      return state
+    },
     addReminder(state, action: PayloadAction<ReminderCreatePayload>) {
       state.reminders?.push({
         ...action.payload,
@@ -73,33 +78,23 @@ const calendarSlice = createSlice({
 
       return state
     },
-    changeReminder(state, action: PayloadAction<Reminder>) {
-      if (!state.reminders || state.reminders?.length === 0) {
-        return
-      }
-
-      const reminderIndex = state.reminders.findIndex(
+    updateReminder(state, action: PayloadAction<Reminder>) {
+      const reminderIndex = state.reminders?.findIndex(
         (element) => element.id === action.payload.id
       )
 
-      if (!reminderIndex || reminderIndex === -1) {
-        return
-      }
+      if (!reminderIndex || reminderIndex === -1) return
 
-      state.reminders[reminderIndex] = { ...action.payload }
+      state.reminders![reminderIndex] = { ...action.payload }
 
       return state
     },
     deleteReminder(state, action: PayloadAction<Reminder>) {
-      if (!state.reminders || state.reminders?.length === 0) {
-        return
-      }
-
-      const reminderIndex = state.reminders.findIndex(
+      const reminderIndex = state.reminders?.findIndex(
         (element) => element.id === action.payload.id
       )
 
-      if (!reminderIndex || reminderIndex === -1) {
+      if (!reminderIndex || reminderIndex === -1 || !state.reminders) {
         return
       }
 
@@ -121,7 +116,8 @@ const calendarSlice = createSlice({
 export const {
   changeDay,
   addReminder,
-  changeReminder,
+  returnToToday,
+  updateReminder,
   deleteReminder,
   purgeCalendarData
 } = calendarSlice.actions
