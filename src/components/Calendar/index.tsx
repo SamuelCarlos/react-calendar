@@ -1,8 +1,8 @@
 import Table from './Table'
-import { Box, Typography } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import { useAppDispatch, useAppSelector } from 'app/hooks'
 import Button from 'components/Button'
-import { purgeCalendarData } from './calendar-slice'
+import { purgeCalendarData, returnToToday } from './calendar-slice'
 
 export default function Calendar() {
   const calendarData = useAppSelector((state) => state.calendar)
@@ -11,13 +11,23 @@ export default function Calendar() {
   return (
     <Box data-testid="calendar">
       <Typography variant="h1">React Calendar</Typography>
-      <Button
-        onClick={() => {
-          dispatch(purgeCalendarData())
-        }}
-      >
-        Clear Data
-      </Button>
+      <Stack direction="row" justifyContent="space-between">
+        <Button
+          onClick={() => {
+            dispatch(returnToToday())
+          }}
+        >
+          Today
+        </Button>
+        <Button
+          color="warning"
+          onClick={() => {
+            dispatch(purgeCalendarData())
+          }}
+        >
+          Clear Data
+        </Button>
+      </Stack>
       <Table
         data={{
           ...calendarData,
