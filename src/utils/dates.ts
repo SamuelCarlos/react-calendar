@@ -5,8 +5,7 @@ import {
   getYear as dateFnsGetYear,
   sub,
   add,
-  endOfMonth,
-  isEqual
+  endOfMonth
 } from 'date-fns'
 
 export enum WeekDays {
@@ -67,5 +66,17 @@ export const addDays = (date: Date, quantity: number) => {
 }
 
 export const equalDates = (dateLeft: Date, dateRight: Date) => {
-  return isEqual(dateLeft, dateRight)
+  const sameYear = dateLeft.getFullYear() === dateRight.getFullYear()
+
+  if (!sameYear) return false
+
+  const sameMonth = dateLeft.getMonth() === dateRight.getMonth()
+
+  if (!sameMonth) return false
+
+  const sameDay = dateLeft.getDate() === dateRight.getDate()
+
+  if (!sameDay) return false
+
+  return true
 }
