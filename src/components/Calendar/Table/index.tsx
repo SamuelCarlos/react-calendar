@@ -1,8 +1,11 @@
+/* eslint-disable no-loop-func */
 import { useState, useEffect } from 'react'
 import {
   TableBody as MuiTableBody,
   TableRow as MuiTableRow,
-  TableCell as MuiTableCell
+  TableCell as MuiTableCell,
+  Typography,
+  Stack
 } from '@mui/material'
 import {
   deserializeDate,
@@ -10,12 +13,18 @@ import {
   firstDayOfMonth,
   getMonthName,
   subtractDays,
-  getYear
+  getYear,
+  isMinor,
+  subtractMonths,
+  addMonths,
+  subtractYears,
+  addYears
 } from 'utils/dates'
 import { addDays } from 'date-fns'
 import { useAppDispatch } from 'app/hooks'
 import { changeDay, Reminder } from '../calendar-slice'
 import TableCell from './TableCell'
+import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material'
 
 import * as S from './styles'
 
@@ -94,7 +103,13 @@ export default function Table({ data }: { data: TableProps }) {
                 }`}
               >
                 <TableCell
-                  data={day}
+                  data={{
+                    date: day.date,
+                    reminders: day.reminders?.sort((a, b) => {
+                      if (isMinor(new Date(a.date), new Date(b.date))) return -1
+                      return 1
+                    })
+                  }}
                   selected={selected}
                   handleSelect={handleSelectDate}
                 />
@@ -109,8 +124,65 @@ export default function Table({ data }: { data: TableProps }) {
     <S.Table>
       <S.TableHead>
         <MuiTableRow>
-          <MuiTableCell colSpan={4}>{getMonthName(selectedDay)}</MuiTableCell>
-          <MuiTableCell colSpan={3}>{getYear(selectedDay)}</MuiTableCell>
+          <MuiTableCell colSpan={4}>
+            <Stack
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              margin="0"
+            >
+              <S.Button
+                onClick={() =>
+                  dispatch(
+                    changeDay(deserializeDate(subtractMonths(selectedDay, 1)))
+                  )
+                }
+              >
+                <ArrowBackIos />
+              </S.Button>
+              <Typography variant="body1" fontWeight={700} fontSize="2rem">
+                {getMonthName(selectedDay)}
+              </Typography>
+              <S.Button
+                onClick={() =>
+                  dispatch(
+                    changeDay(deserializeDate(addMonths(selectedDay, 1)))
+                  )
+                }
+              >
+                <ArrowForwardIos />
+              </S.Button>
+            </Stack>
+          </MuiTableCell>
+          <MuiTableCell colSpan={3}>
+            {' '}
+            <Stack
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              margin="0"
+            >
+              <S.Button
+                onClick={() =>
+                  dispatch(
+                    changeDay(deserializeDate(subtractYears(selectedDay, 1)))
+                  )
+                }
+              >
+                <ArrowBackIos />
+              </S.Button>
+              <Typography variant="body1" fontWeight={700} fontSize="2rem">
+                {getYear(selectedDay)}
+              </Typography>
+              <S.Button
+                onClick={() =>
+                  dispatch(changeDay(deserializeDate(addYears(selectedDay, 1))))
+                }
+              >
+                <ArrowForwardIos />
+              </S.Button>
+            </Stack>
+          </MuiTableCell>
         </MuiTableRow>
         <MuiTableRow>
           <MuiTableCell className="weekday">Sun</MuiTableCell>
