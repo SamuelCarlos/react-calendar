@@ -20,6 +20,10 @@ export const Table = styled.table`
     border: none;
   }
 
+  th {
+    height: 40px;
+  }
+
   td,
   th {
     min-width: 30px;
@@ -31,11 +35,13 @@ export const TableCell = styled(MuiTableCell)`
   position: relative;
   transition: 0.2s ease-out;
   font-weight: 800;
-  height: 6rem;
-  max-height: 6rem;
+  max-height: 120px;
+  min-height: 120px;
+  height: 120px;
 
   &:hover {
     cursor: pointer;
+    background-color: #d8c49222;
   }
 
   &.dark {
@@ -71,4 +77,12 @@ export const TableHead = styled(MuiTableHead)`
     text-align: left;
     background-color: #755036;
   }
+`
+
+export const Button = styled.button`
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: #d8c492;
+  margin: 0;
 `
