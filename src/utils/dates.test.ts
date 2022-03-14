@@ -5,7 +5,12 @@ import {
   getYear,
   subtractDays,
   addDays,
-  equalDates
+  equalDates,
+  subtractMonths,
+  subtractYears,
+  addYears,
+  addMonths,
+  isMinor
 } from './dates'
 
 describe('Dates utils', () => {
@@ -60,6 +65,38 @@ describe('Dates utils', () => {
     })
   })
 
+  describe('subtractMonths()', () => {
+    it('should return 1 month before day 3/11/2022', () => {
+      const date = subtractMonths(new Date('3/11/2022'), 1)
+
+      expect(date.toLocaleDateString('en-US')).toBe('2/11/2022')
+    })
+  })
+
+  describe('addMonths()', () => {
+    it('should return 1 month after day 3/11/2022', () => {
+      const date = addMonths(new Date('3/11/2022'), 1)
+
+      expect(date.toLocaleDateString('en-US')).toBe('4/11/2022')
+    })
+  })
+
+  describe('subtractYears()', () => {
+    it('should return 1 year before day 3/11/2022', () => {
+      const date = subtractYears(new Date('3/11/2022'), 1)
+
+      expect(date.toLocaleDateString('en-US')).toBe('3/11/2021')
+    })
+  })
+
+  describe('addYears()', () => {
+    it('should return 1 month after day 3/11/2022', () => {
+      const date = addYears(new Date('3/11/2022'), 1)
+
+      expect(date.toLocaleDateString('en-US')).toBe('3/11/2023')
+    })
+  })
+
   describe('equalDates()', () => {
     it('should return true if sending two equal dates', () => {
       const dateLeft = new Date('3/11/2022')
@@ -92,6 +129,26 @@ describe('Dates utils', () => {
       const isDatesEqual = equalDates(dateLeft, dateRight)
 
       expect(isDatesEqual).toBe(false)
+    })
+  })
+
+  describe('isMinor()', () => {
+    it('should return true if the left date is minor than the right date', () => {
+      const dateLeft = new Date('3/11/2022 22:11')
+      const dateRight = new Date('3/11/2022 23:11')
+
+      const isLeftMinor = isMinor(dateLeft, dateRight)
+
+      expect(isLeftMinor).toBe(true)
+    })
+
+    it('should return false if the left date is minor than the right date', () => {
+      const dateLeft = new Date('3/11/2022 23:11')
+      const dateRight = new Date('3/11/2022 22:11')
+
+      const isLeftMinor = isMinor(dateLeft, dateRight)
+
+      expect(isLeftMinor).toBe(false)
     })
   })
 })
