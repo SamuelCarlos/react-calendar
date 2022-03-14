@@ -14,6 +14,10 @@ import persistStore from 'redux-persist/es/persistStore'
 
 let persistor = persistStore(store)
 
+const script = document.createElement('script')
+script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_API_KEY}&libraries=places`
+document.body.appendChild(script)
+
 ReactDOM.render(
   <React.StrictMode>
     <ReduxProvider store={store}>
