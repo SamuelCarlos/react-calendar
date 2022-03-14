@@ -51,7 +51,7 @@ const ReminderListItem = ({ data, onClick }: ReminderListItemProps) => {
     isLoading: isLoadingWeather
   } = useGetWeatherForDayQuery({
     city: data.city,
-    date: new Date(data.date)
+    date: new Date(data.date).toISOString()
   })
 
   return (
@@ -67,6 +67,7 @@ const ReminderListItem = ({ data, onClick }: ReminderListItemProps) => {
       height="100%"
       bgcolor={data.color + '77'}
       data-testid="list-item"
+      sx={{ ':hover': { transform: 'scale(1.01)' } }}
     >
       <Stack
         direction="column"
@@ -187,13 +188,19 @@ const ReminderList = ({
           maxHeight="60px"
         >
           <Add fontSize="small" />
-          <Typography variant="button" fontWeight={500} paddingLeft="10px">
+          <Typography variant="body2" fontWeight={500} paddingLeft="10px">
             Add new reminder
           </Typography>
         </Stack>
       </S.Button>
     </Box>
   )
+}
+
+const formatInputAcceptableDate = (date: Date) => {
+  const splittedDate = date.toISOString().split(':')
+  splittedDate.pop()
+  return splittedDate.join(':')
 }
 
 export const ReminderForm = ({
@@ -208,7 +215,10 @@ export const ReminderForm = ({
   const [formData, setFormData] = useState<ReminderCreatePayload>(
     reminder
       ? { text: reminder.text, date: reminder.date, city: reminder.city }
-      : { ...BLANK_REMINDER_FORM, date: selectedDay.toISOString() }
+      : {
+          ...BLANK_REMINDER_FORM,
+          date: formatInputAcceptableDate(selectedDay)
+        }
   )
 
   const dispatch = useAppDispatch()

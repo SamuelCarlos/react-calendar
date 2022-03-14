@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   Box,
   Stack,
@@ -22,27 +22,20 @@ export default function TableCell({
   selected,
   handleSelect
 }: TableCellProps) {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+  const anchorEl = useRef<HTMLButtonElement | null>(null)
 
   const { date, reminders } = data
 
-  const handleOpenPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handleClosePopover = () => {
-    setAnchorEl(null)
-  }
-
-  const isPopoverOpen = Boolean(anchorEl)
   const id = isPopoverOpen ? 'popover' : undefined
 
   return (
     <S.Button
+      ref={anchorEl}
       aria-describedby={id}
       onClick={(e) => {
         if (!selected) handleSelect(data.date)
-        if (selected) handleOpenPopover(e)
+        if (selected) setIsPopoverOpen(true)
       }}
       disabled={isPopoverOpen}
       data-testid="table-cell"
@@ -110,17 +103,25 @@ export default function TableCell({
         <ClickAwayListener
           onClickAway={() => {
             if (!isPopoverOpen) {
-              handleClosePopover()
+              setIsPopoverOpen(false)
             }
           }}
         >
           <Popover
             id={id}
             open={isPopoverOpen}
-            anchorEl={anchorEl}
-            onClose={handleClosePopover}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            disableScrollLock
+            anchorEl={anchorEl.current}
+            onClose={() => setIsPopoverOpen(false)}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'center'
+            }}
+            transformOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center'
+            }}
+            disablePortal
+            sx={{ maxHeight: '350px' }}
           >
             <PopoverContent reminders={reminders} selectedDay={date} />
           </Popover>

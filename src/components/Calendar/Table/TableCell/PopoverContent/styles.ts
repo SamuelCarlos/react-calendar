@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-export const Button = styled.button`
+export const Button = styled.div`
   width: 100%;
   height: 100%;
 

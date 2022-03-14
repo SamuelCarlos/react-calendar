@@ -5,7 +5,14 @@ import usePlacesAutocomplete, {
 import useOnclickOutside from 'react-cool-onclickoutside'
 import React, { useEffect, useState } from 'react'
 import { CityData } from 'components/Calendar/calendar-slice'
-import { Grid, TextField } from '@mui/material'
+import {
+  Grid,
+  List,
+  ListItem,
+  ListItemButton,
+  TextField,
+  Typography
+} from '@mui/material'
 
 interface PlacesAutocompleteProps {
   city?: CityData
@@ -86,9 +93,16 @@ const PlacesAutocomplete = ({
       } = suggestion
 
       return (
-        <li key={place_id} onClick={handleSelect(suggestion)}>
-          <strong>{main_text}</strong> <small>{secondary_text}</small>
-        </li>
+        <ListItem key={place_id} onClick={handleSelect(suggestion)}>
+          <ListItemButton>
+            <Typography fontWeight={700} paddingRight="5px">
+              {main_text}
+            </Typography>{' '}
+            <Typography>
+              <small>{secondary_text}</small>
+            </Typography>
+          </ListItemButton>
+        </ListItem>
       )
     })
 
@@ -104,7 +118,20 @@ const PlacesAutocomplete = ({
         fullWidth
         autoComplete="off"
       />
-      {status === 'OK' && <ul>{renderSuggestions()}</ul>}
+      {status === 'OK' && (
+        <List
+          sx={{
+            width: '100%',
+            bgcolor: 'background.paper',
+            position: 'relative',
+            overflow: 'auto',
+            maxHeight: 200,
+            '& ul': { padding: 0 }
+          }}
+        >
+          {renderSuggestions()}
+        </List>
+      )}
     </Grid>
   )
 }

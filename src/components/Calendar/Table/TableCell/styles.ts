@@ -10,7 +10,7 @@ export const Button = styled.button`
 
   .reminders-box {
     :hover {
-      overflow: auto;
+      overflow-y: auto;
     }
   }
 `

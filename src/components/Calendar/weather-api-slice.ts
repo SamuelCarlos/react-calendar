@@ -4,7 +4,7 @@ import { WeatherData } from './weather.type'
 
 export interface GetWeather {
   city: CityData
-  date: Date
+  date: string
 }
 
 const API_KEY = process.env.REACT_APP_VISUAL_CROSSING_KEY
@@ -19,7 +19,7 @@ export const weatherApi = createApi({
   endpoints: (builder) => ({
     getWeatherForDay: builder.query<WeatherData, GetWeather>({
       query: (data) => {
-        const splittedDate = data.date.toISOString().split('T')
+        const splittedDate = data.date.split('T')
 
         const cityString =
           data.city.lat && data.city.lng
