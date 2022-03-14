@@ -121,7 +121,7 @@ export default function Table({ data }: { data: TableProps }) {
     })
 
   return (
-    <S.Table>
+    <S.Table data-testid="table">
       <S.TableHead>
         <MuiTableRow>
           <MuiTableCell colSpan={4}>
@@ -132,6 +132,7 @@ export default function Table({ data }: { data: TableProps }) {
               margin="0"
             >
               <S.Button
+                data-testid="back-month"
                 onClick={() =>
                   dispatch(
                     changeDay(deserializeDate(subtractMonths(selectedDay, 1)))
@@ -144,6 +145,7 @@ export default function Table({ data }: { data: TableProps }) {
                 {getMonthName(selectedDay)}
               </Typography>
               <S.Button
+                data-testid="ahead-month"
                 onClick={() =>
                   dispatch(
                     changeDay(deserializeDate(addMonths(selectedDay, 1)))
@@ -155,7 +157,6 @@ export default function Table({ data }: { data: TableProps }) {
             </Stack>
           </MuiTableCell>
           <MuiTableCell colSpan={3}>
-            {' '}
             <Stack
               direction="row"
               justifyContent="center"
@@ -163,6 +164,7 @@ export default function Table({ data }: { data: TableProps }) {
               margin="0"
             >
               <S.Button
+                data-testid="back-year"
                 onClick={() =>
                   dispatch(
                     changeDay(deserializeDate(subtractYears(selectedDay, 1)))
@@ -175,6 +177,7 @@ export default function Table({ data }: { data: TableProps }) {
                 {getYear(selectedDay)}
               </Typography>
               <S.Button
+                data-testid="ahead-year"
                 onClick={() =>
                   dispatch(changeDay(deserializeDate(addYears(selectedDay, 1))))
                 }

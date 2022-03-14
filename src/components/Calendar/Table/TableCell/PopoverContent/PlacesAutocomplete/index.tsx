@@ -102,8 +102,8 @@ const PlacesAutocomplete = ({
         disabled={!ready}
         placeholder={city?.name || 'City'}
         fullWidth
+        autoComplete="off"
       />
-      {/* We can use the "status" to decide whether we should display the dropdown or not */}
       {status === 'OK' && <ul>{renderSuggestions()}</ul>}
     </Grid>
   )

@@ -45,6 +45,7 @@ export default function TableCell({
         if (selected) handleOpenPopover(e)
       }}
       disabled={isPopoverOpen}
+      data-testid="table-cell"
     >
       <Box
         display="flex"
@@ -71,37 +72,39 @@ export default function TableCell({
             height="100%"
             margin="0"
           >
-            {reminders.map((reminder) => (
-              <Stack
-                key={reminder.id}
-                bgcolor={reminder.color}
-                margin="1px 0"
-                padding="1px 3px 1px 3px"
-                boxShadow="1px 1px 1px rgba(0,0,0, 0.1)"
-                overflow="auto"
-                direction="row"
-                justifyContent="flex-start"
-              >
-                <Typography
-                  variant="caption"
-                  max-width="100%"
-                  whiteSpace="nowrap"
-                  overflow="hidden"
-                  textOverflow="ellipsis"
-                  fontSize="0.85rem"
-                  fontWeight={100}
+            {reminders.map((reminder) => {
+              return (
+                <Stack
+                  key={reminder.id}
+                  bgcolor={reminder.color}
+                  margin="1px 0"
+                  padding="1px 3px 1px 3px"
+                  boxShadow="1px 1px 1px rgba(0,0,0, 0.1)"
+                  overflow="auto"
+                  direction="row"
+                  justifyContent="flex-start"
                 >
-                  {`${new Date(reminder.date)
-                    .getHours()
-                    .toString()
-                    .padStart(2, '0')}:${new Date(reminder.date)
-                    .getMinutes()
-                    .toString()
-                    .padStart(2, '0')} - `}
-                  {reminder.text}
-                </Typography>
-              </Stack>
-            ))}
+                  <Typography
+                    variant="caption"
+                    max-width="100%"
+                    whiteSpace="nowrap"
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                    fontSize="0.85rem"
+                    fontWeight={100}
+                  >
+                    {`${new Date(reminder.date)
+                      .getHours()
+                      .toString()
+                      .padStart(2, '0')}:${new Date(reminder.date)
+                      .getMinutes()
+                      .toString()
+                      .padStart(2, '0')} - `}
+                    {reminder.text}
+                  </Typography>
+                </Stack>
+              )
+            })}
           </Box>
         )}
         <ClickAwayListener
