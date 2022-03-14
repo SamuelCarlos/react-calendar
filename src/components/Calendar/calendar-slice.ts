@@ -17,6 +17,7 @@ export interface Reminder extends ReminderCreatePayload {
   id: string
   color: string
 }
+
 export interface CalendarState {
   selectedDay: string
   reminders?: Reminder[]

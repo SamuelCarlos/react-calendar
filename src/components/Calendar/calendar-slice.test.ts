@@ -138,7 +138,7 @@ describe('calendar-slice.ts', () => {
   })
 
   describe('deleteReminder', () => {
-    it('should delete a reminder on store.calendar.reminders', () => {
+    it('should return a empty array if delete the only reminder left on store.calendar.reminders', () => {
       const newReminder: ReminderCreatePayload = {
         text: 'test reminder',
         city: { name: 'Cariacica' },
@@ -172,7 +172,52 @@ describe('calendar-slice.ts', () => {
       const updatedReminders = store.getState().calendar.reminders
 
       expect(updatedReminders).toBeDefined()
-      expect(updatedReminders!.length).toBeGreaterThan(0)
+      expect(updatedReminders!.length).toBe(0)
+
+      myReminder = updatedReminders!.find(
+        (reminder) => reminder.id === myReminder!.id
+      )
+
+      expect(myReminder).not.toBeDefined()
+    })
+
+    it('should delete a reminder on store.calendar.reminders', () => {
+      const newReminder: ReminderCreatePayload = {
+        text: 'test reminder',
+        city: { name: 'Cariacica' },
+        date: new Date().toISOString()
+      }
+
+      store.dispatch(addReminder(newReminder))
+
+      store.dispatch(addReminder(newReminder))
+
+      const reminders = store.getState().calendar.reminders
+
+      let myReminder: Reminder | undefined = {
+        ...reminders![reminders!.length - 1]
+      }
+
+      expect(myReminder.city.name).toBe(newReminder.city.name)
+      expect(myReminder.date).toBe(newReminder.date)
+      expect(myReminder.text).toBe(newReminder.text)
+
+      store.dispatch(deleteReminder({ ...myReminder, id: 'wrong-id' }))
+
+      const notDeletedReminders = store.getState().calendar.reminders
+      const myNotDeletedReminder =
+        notDeletedReminders![notDeletedReminders!.length - 1]
+
+      expect(myNotDeletedReminder.city.name).toBe(myReminder.city.name)
+      expect(myNotDeletedReminder.date).toBe(myReminder.date)
+      expect(myNotDeletedReminder.text).toBe(myReminder.text)
+
+      store.dispatch(deleteReminder(myReminder))
+
+      const updatedReminders = store.getState().calendar.reminders
+
+      expect(updatedReminders).toBeDefined()
+      expect(updatedReminders!.length).toBe(1)
 
       myReminder = updatedReminders!.find(
         (reminder) => reminder.id === myReminder!.id
