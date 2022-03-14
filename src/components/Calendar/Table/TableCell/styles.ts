@@ -8,7 +8,9 @@ export const Button = styled.button`
   background-color: transparent;
   cursor: pointer;
 
-  :focus {
-    border: none;
+  .reminders-box {
+    :hover {
+      overflow: auto;
+    }
   }
 `
