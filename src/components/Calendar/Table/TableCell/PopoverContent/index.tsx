@@ -1,27 +1,30 @@
 import React, { useEffect, useState } from 'react'
 
-import { Box, Divider, Grid, Stack, TextField, Typography } from '@mui/material'
 import {
-  addReminder,
+  Box,
+  Grid,
+  Stack,
+  Divider,
+  Tooltip,
+  TextField,
+  Typography,
+  CircularProgress
+} from '@mui/material'
+import {
   CityData,
-  deleteReminder,
   Reminder,
-  ReminderCreatePayload,
-  updateReminder
+  addReminder,
+  updateReminder,
+  deleteReminder,
+  ReminderCreatePayload
 } from 'components/Calendar/calendar-slice'
-import {
-  Add,
-  WbSunny,
-  Edit,
-  Save,
-  Delete,
-  LocationOff
-} from '@mui/icons-material'
-
-import * as S from './styles'
+import { Add, Edit, Save, Delete, LocationOff } from '@mui/icons-material'
 import PlacesAutocomplete from './PlacesAutocomplete'
 import Button from 'components/Button'
 import { useAppDispatch } from 'app/hooks'
+
+import * as S from './styles'
+import { useGetWeatherForDayQuery } from 'components/Calendar/weather-api-slice'
 
 interface PopoverContentProps {
   selectedDay: Date
@@ -42,6 +45,15 @@ const BLANK_REMINDER_FORM: ReminderCreatePayload = {
 }
 
 const ReminderListItem = ({ data, onClick }: ReminderListItemProps) => {
+  const {
+    data: weatherData,
+    error,
+    isLoading: isLoadingWeather
+  } = useGetWeatherForDayQuery({
+    city: data.city,
+    date: new Date(data.date)
+  })
+
   return (
     <Stack
       direction="row"
@@ -54,6 +66,7 @@ const ReminderListItem = ({ data, onClick }: ReminderListItemProps) => {
       minHeight="60px"
       height="100%"
       bgcolor={data.color + '77'}
+      data-testid="list-item"
     >
       <Stack
         direction="column"
@@ -63,7 +76,9 @@ const ReminderListItem = ({ data, onClick }: ReminderListItemProps) => {
         margin="0"
         minWidth="80px"
       >
-        {data.city.name ? (
+        {isLoadingWeather ? (
+          <CircularProgress size="10px" />
+        ) : data.city.name ? (
           <>
             <Stack
               direction="row"
@@ -72,9 +87,19 @@ const ReminderListItem = ({ data, onClick }: ReminderListItemProps) => {
               width="100%"
               margin="0"
             >
-              <WbSunny color="warning" />
+              <Tooltip
+                title={weatherData?.days[0].conditions || 'conditions'}
+                placement="top-end"
+              >
+                <img
+                  width="30px"
+                  src={`/icons/${weatherData?.days[0].icon}.png`}
+                  alt={weatherData?.days[0].conditions}
+                />
+              </Tooltip>
+
               <Typography variant="body2" fontWeight={700}>
-                32°C
+                {weatherData?.days[0].temp}°F
               </Typography>
             </Stack>
             <Stack
@@ -136,7 +161,12 @@ const ReminderList = ({
   handleChangeContent: (content: PopoverOptions) => void
 }) => {
   return (
-    <Box borderRadius="5px" display="flex" flexDirection="column">
+    <Box
+      borderRadius="5px"
+      display="flex"
+      flexDirection="column"
+      data-testid="popover-content-list"
+    >
       {reminders &&
         reminders.map((reminder) => (
           <ReminderListItem
@@ -166,7 +196,7 @@ const ReminderList = ({
   )
 }
 
-const ReminderForm = ({
+export const ReminderForm = ({
   reminder,
   selectedDay,
   handleClose
@@ -180,21 +210,10 @@ const ReminderForm = ({
       ? { text: reminder.text, date: reminder.date, city: reminder.city }
       : { ...BLANK_REMINDER_FORM, date: selectedDay.toISOString() }
   )
-  const [time, setTime] = useState<string>(
-    reminder
-      ? `${new Date(reminder.date).getHours()}:${new Date(
-          reminder.date
-        ).getMinutes()}`
-      : '6:00'
-  )
 
   const dispatch = useAppDispatch()
 
   const onChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === 'time') {
-      setTime(e.target.value)
-    }
-
     setFormData((state) => ({ ...state, [e.target.name]: e.target.value }))
   }
 
@@ -219,16 +238,6 @@ const ReminderForm = ({
     setFormData((state) => ({ ...state, city }))
   }
 
-  useEffect(() => {
-    const date = new Date(formData.date).toLocaleDateString('en-US')
-
-    setFormData((state) => ({
-      ...state,
-      date: new Date(date + ' ' + time).toISOString()
-    }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [time])
-
   return (
     <Box
       borderRadius="5px"
@@ -236,6 +245,7 @@ const ReminderForm = ({
       flexDirection="column"
       padding="15px"
       maxWidth="300px"
+      data-testid="popover-content-form"
     >
       <form onSubmit={onSubmit}>
         <Grid container spacing={2}>
@@ -247,18 +257,22 @@ const ReminderForm = ({
               onChange={onChangeForm}
               fullWidth
               value={formData.text}
-              inputProps={{ maxLength: 30 }}
+              inputProps={{
+                maxLength: 30,
+                'data-testid': 'reminder-text-input'
+              }}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label="Time"
-              type="time"
-              name="time"
+              label="Date and Time"
+              type="datetime-local"
+              name="date"
               required
               onChange={onChangeForm}
               fullWidth
-              value={time}
+              value={formData.date}
+              inputProps={{ 'data-testid': 'reminder-date-time-input' }}
             />
           </Grid>
 
@@ -280,6 +294,7 @@ const ReminderForm = ({
               {reminder && (
                 <Stack margin="0">
                   <Button
+                    data-testid="delete-reminder-button"
                     color="error"
                     onClick={() => {
                       dispatch(deleteReminder(reminder))
@@ -294,7 +309,7 @@ const ReminderForm = ({
                 margin="0"
                 justifySelf={!Boolean(reminder) ? 'flex-end' : ''}
               >
-                <Button type="submit">
+                <Button type="submit" data-testid="save-reminder-button">
                   <Save />
                 </Button>
               </Stack>
