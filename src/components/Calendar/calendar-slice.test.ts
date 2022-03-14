@@ -72,7 +72,7 @@ describe('calendar-slice.ts', () => {
     it('should push a reminder on store.calendar.reminders', () => {
       const newReminder: ReminderCreatePayload = {
         text: 'test reminder',
-        city: 'Cariacica',
+        city: { name: 'Cariacica' },
         date: new Date().toISOString()
       }
 
@@ -85,7 +85,9 @@ describe('calendar-slice.ts', () => {
 
       const lastReminderPosition = reminders!.length - 1
 
-      expect(reminders![lastReminderPosition].city).toBe(newReminder.city)
+      expect(reminders![lastReminderPosition].city.name).toBe(
+        newReminder.city.name
+      )
       expect(reminders![lastReminderPosition].text).toBe(newReminder.text)
       expect(reminders![lastReminderPosition].date).toBe(newReminder.date)
     })
@@ -95,7 +97,7 @@ describe('calendar-slice.ts', () => {
     it('should update a reminder on store.calendar.reminders', () => {
       const newReminder: ReminderCreatePayload = {
         text: 'test reminder',
-        city: 'Cariacica',
+        city: { name: 'Cariacica' },
         date: new Date().toISOString()
       }
 
@@ -105,12 +107,12 @@ describe('calendar-slice.ts', () => {
 
       let myReminder = { ...reminders![reminders!.length - 1] }
 
-      expect(myReminder.city).toBe(newReminder.city)
+      expect(myReminder.city.name).toBe(newReminder.city.name)
       expect(myReminder.date).toBe(newReminder.date)
       expect(myReminder.text).toBe(newReminder.text)
 
       myReminder.text = 'updated test reminder'
-      myReminder.city = 'Vitoria'
+      myReminder.city = { name: 'Vitoria' }
       myReminder.date = new Date('11/11/1998').toISOString()
 
       store.dispatch(updateReminder({ ...myReminder, id: 'wrong-id' }))
@@ -119,7 +121,7 @@ describe('calendar-slice.ts', () => {
       const myNotUpdatedReminder =
         notUpdatedReminders![notUpdatedReminders!.length - 1]
 
-      expect(myNotUpdatedReminder.city).not.toBe(myReminder.city)
+      expect(myNotUpdatedReminder.city.name).not.toBe(myReminder.city.name)
       expect(myNotUpdatedReminder.date).not.toBe(myReminder.date)
       expect(myNotUpdatedReminder.text).not.toBe(myReminder.text)
 
@@ -129,7 +131,7 @@ describe('calendar-slice.ts', () => {
 
       const myUpdatedReminder = updatedReminders![updatedReminders!.length - 1]
 
-      expect(myUpdatedReminder.city).toBe(myReminder.city)
+      expect(myUpdatedReminder.city.name).toBe(myReminder.city.name)
       expect(myUpdatedReminder.date).toBe(myReminder.date)
       expect(myUpdatedReminder.text).toBe(myReminder.text)
     })
@@ -139,7 +141,7 @@ describe('calendar-slice.ts', () => {
     it('should delete a reminder on store.calendar.reminders', () => {
       const newReminder: ReminderCreatePayload = {
         text: 'test reminder',
-        city: 'Cariacica',
+        city: { name: 'Cariacica' },
         date: new Date().toISOString()
       }
 
@@ -151,7 +153,7 @@ describe('calendar-slice.ts', () => {
         ...reminders![reminders!.length - 1]
       }
 
-      expect(myReminder.city).toBe(newReminder.city)
+      expect(myReminder.city.name).toBe(newReminder.city.name)
       expect(myReminder.date).toBe(newReminder.date)
       expect(myReminder.text).toBe(newReminder.text)
 
@@ -161,7 +163,7 @@ describe('calendar-slice.ts', () => {
       const myNotDeletedReminder =
         notDeletedReminders![notDeletedReminders!.length - 1]
 
-      expect(myNotDeletedReminder.city).toBe(myReminder.city)
+      expect(myNotDeletedReminder.city.name).toBe(myReminder.city.name)
       expect(myNotDeletedReminder.date).toBe(myReminder.date)
       expect(myNotDeletedReminder.text).toBe(myReminder.text)
 

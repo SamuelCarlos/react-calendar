@@ -1,10 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid'
 
+export interface CityData {
+  name: string
+  lat?: number
+  lng?: number
+}
+
 export interface ReminderCreatePayload {
   date: string
   text: string
-  city: string
+  city: CityData
 }
 
 export interface Reminder extends ReminderCreatePayload {
@@ -23,36 +29,7 @@ const getRandomColor = () =>
 
 const initialState: CalendarState = {
   selectedDay: new Date().toISOString(),
-  reminders: [
-    {
-      id: uuidv4(),
-      date: new Date('3/14/2022').toISOString(),
-      text: 'Cut hair',
-      city: 'Cariacica',
-      color: getRandomColor()
-    },
-    {
-      id: uuidv4(),
-      date: new Date().toISOString(),
-      text: 'Doctor',
-      city: 'Cariacica',
-      color: getRandomColor()
-    },
-    {
-      id: uuidv4(),
-      date: new Date().toISOString(),
-      text: 'Wash car',
-      city: 'Cariacica',
-      color: getRandomColor()
-    },
-    {
-      id: uuidv4(),
-      date: new Date().toISOString(),
-      text: 'Pay internet bill',
-      city: 'Cariacica',
-      color: getRandomColor()
-    }
-  ]
+  reminders: []
 }
 
 const calendarSlice = createSlice({
@@ -83,7 +60,7 @@ const calendarSlice = createSlice({
         (element) => element.id === action.payload.id
       )
 
-      if (!reminderIndex || reminderIndex === -1) return
+      if (reminderIndex === undefined || reminderIndex === -1) return
 
       state.reminders![reminderIndex] = { ...action.payload }
 
@@ -94,8 +71,17 @@ const calendarSlice = createSlice({
         (element) => element.id === action.payload.id
       )
 
-      if (!reminderIndex || reminderIndex === -1 || !state.reminders) {
+      if (
+        reminderIndex === undefined ||
+        reminderIndex === -1 ||
+        !state.reminders
+      ) {
         return
+      }
+
+      if (state.reminders.length === 1) {
+        state.reminders.pop()
+        return state
       }
 
       const remindersCopy = [...state.reminders]
