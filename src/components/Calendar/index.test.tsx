@@ -6,11 +6,9 @@ import { store } from 'app/store'
 describe('Calendar', () => {
   describe('<Calendar /> component', () => {
     beforeEach(() => {
-      const selectedDay = store.getState().calendar.selectedDay
-
       render(
         <ReduxProvider store={store}>
-          <Calendar selectedDay={selectedDay} />
+          <Calendar />
         </ReduxProvider>
       )
     })
