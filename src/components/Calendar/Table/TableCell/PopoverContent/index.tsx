@@ -265,7 +265,6 @@ export const ReminderForm = ({
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label="Date and Time"
               type="datetime-local"
               name="date"
               required
@@ -288,7 +287,7 @@ export const ReminderForm = ({
               width="100%"
               margin="0"
               alignItems="center"
-              justifyContent="space-between"
+              justifyContent={reminder ? 'space-between' : 'flex-end'}
               paddingTop="10px"
             >
               {reminder && (
@@ -305,10 +304,7 @@ export const ReminderForm = ({
                   </Button>
                 </Stack>
               )}
-              <Stack
-                margin="0"
-                justifySelf={!Boolean(reminder) ? 'flex-end' : ''}
-              >
+              <Stack margin="0" justifySelf="flex-end">
                 <Button type="submit" data-testid="save-reminder-button">
                   <Save />
                 </Button>
