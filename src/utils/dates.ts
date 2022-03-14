@@ -3,7 +3,9 @@ import {
   format,
   getYear as dateFnsGetYear,
   sub,
-  add
+  add,
+  min,
+  isSameMinute
 } from 'date-fns'
 
 export enum WeekDays {
@@ -55,6 +57,22 @@ export const addDays = (date: Date, quantity: number) => {
   return add(date, { days: quantity })
 }
 
+export const subtractMonths = (date: Date, quantity: number) => {
+  return sub(date, { months: quantity })
+}
+
+export const addMonths = (date: Date, quantity: number) => {
+  return add(date, { months: quantity })
+}
+
+export const subtractYears = (date: Date, quantity: number) => {
+  return sub(date, { years: quantity })
+}
+
+export const addYears = (date: Date, quantity: number) => {
+  return add(date, { years: quantity })
+}
+
 export const equalDates = (dateLeft: Date, dateRight: Date) => {
   const sameYear = dateLeft.getFullYear() === dateRight.getFullYear()
 
@@ -69,4 +87,11 @@ export const equalDates = (dateLeft: Date, dateRight: Date) => {
   if (!sameDay) return false
 
   return true
+}
+
+export const isMinor = (dateLeft: Date, dateRight: Date) => {
+  const minOne = min([dateLeft, dateRight])
+
+  if (isSameMinute(minOne, dateLeft)) return true
+  return false
 }
