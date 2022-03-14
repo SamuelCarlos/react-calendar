@@ -11,6 +11,7 @@ import {
   REGISTER
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import { weatherApi } from 'components/Calendar/weather-api-slice'
 
 const persistConfig = {
   key: 'root',
@@ -18,7 +19,10 @@ const persistConfig = {
   storage
 }
 
-const reducers = combineReducers({ calendar: calendarReducer })
+const reducers = combineReducers({
+  calendar: calendarReducer,
+  [weatherApi.reducerPath]: weatherApi.reducer
+})
 
 const persistedReducer = persistReducer(persistConfig, reducers)
 
@@ -29,7 +33,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
       }
-    })
+    }).concat(weatherApi.middleware)
 })
 
 export type AppDispatch = typeof store.dispatch
