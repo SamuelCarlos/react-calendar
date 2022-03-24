@@ -8,33 +8,6 @@ import {
   isSameMinute
 } from 'date-fns'
 
-export enum WeekDays {
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday'
-}
-
-export type WeekDaysNames = keyof typeof WeekDays
-
-export const Months = {
-  1: 'Jan',
-  2: 'Feb',
-  3: 'Mar',
-  4: 'Apr',
-  5: 'May',
-  6: 'Jun',
-  7: 'Jul',
-  8: 'Aug',
-  9: 'Sep',
-  10: 'Oct',
-  11: 'Nov',
-  12: 'Dec'
-}
-
 export const firstDayOfMonth = (date: Date) => {
   return startOfMonth(date)
 }
