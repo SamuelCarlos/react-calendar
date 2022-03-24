@@ -6,6 +6,8 @@ import { store } from 'app/store'
 import Main from './Main'
 import reportWebVitals from './reportWebVitals'
 import { PersistGate } from 'redux-persist/integration/react'
+import { ThemeProvider } from '@mui/system'
+import { theme } from 'theme'
 
 // import main sass file
 import './sass/app.scss'
@@ -20,13 +22,15 @@ document.body.appendChild(script)
 
 ReactDOM.render(
   <React.StrictMode>
-    <ReduxProvider store={store}>
-      <PersistGate loading={<div>Loading</div>} persistor={persistor}>
-        <BrowserRouter>
-          <Main />
-        </BrowserRouter>
-      </PersistGate>
-    </ReduxProvider>
+    <ThemeProvider theme={theme}>
+      <ReduxProvider store={store}>
+        <PersistGate loading={<div>Loading</div>} persistor={persistor}>
+          <BrowserRouter>
+            <Main />
+          </BrowserRouter>
+        </PersistGate>
+      </ReduxProvider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )

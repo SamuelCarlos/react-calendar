@@ -7,14 +7,6 @@ interface ButtonProps extends MuiButtonProps {
   width?: string
 }
 
-export default function Button({
-  children,
-  variant = 'contained',
-  ...otherProps
-}: ButtonProps) {
-  return (
-    <MuiButton variant={variant} {...otherProps}>
-      {children}
-    </MuiButton>
-  )
+export default function Button({ children, ...otherProps }: ButtonProps) {
+  return <MuiButton {...otherProps}>{children}</MuiButton>
 }
