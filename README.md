@@ -4,11 +4,11 @@
 
 # React Challenge
 
-## How to deploy
+## How to run
 
-1.  Create a .env file like .env.example and set up the variables.
-2.  Run `npm install` | `yarn install` to install all dependencies.
-3.  Run `npm start` | `yarn start` to run the app locally.
+1.  Create a file called .env which content matches .env.example and set up the variables values (if you don't have access to that, please, contact the responsibles for this project).
+2.  Run `npm install` or `yarn install` to install all dependencies.
+3.  Run `npm start` or `yarn start` to run the app locally.
 4.  You can find the project running on `localhost:3000`.
 
 # Developer notes
