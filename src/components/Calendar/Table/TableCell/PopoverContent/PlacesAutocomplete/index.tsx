@@ -81,6 +81,7 @@ const PlacesAutocomplete = ({
           setCityData(currentCity)
         })
         .catch((error) => {
+          // eslint-disable-next-line no-console
           console.error('Error: ', error)
         })
     }

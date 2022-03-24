@@ -26,7 +26,7 @@ import { changeDay, Reminder } from '../calendar-slice'
 import TableCell from './TableCell'
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material'
 
-import * as S from './styles'
+import * as Styled from './styles'
 
 const NUMBER_OF_WEEKS = 6
 const DAYS_IN_A_WEEK = 7
@@ -66,7 +66,7 @@ export default function Table({ data }: { data: TableProps }) {
     const MONTH: DayData[][] = []
     let WEEK: DayData[] = []
 
-    for (let i = 1; i <= TOTAL_CALENDAR_PAGE_DAY; i++) {
+    for (let iterator = 1; iterator <= TOTAL_CALENDAR_PAGE_DAY; iterator++) {
       let dateReminders
       if (reminders && reminders.length > 0) {
         dateReminders = reminders.filter((reminder) =>
@@ -74,7 +74,7 @@ export default function Table({ data }: { data: TableProps }) {
         )
       }
       WEEK.push({ date: currentDay, reminders: dateReminders })
-      if (i % 7 === 0) {
+      if (iterator % 7 === 0) {
         MONTH.push(WEEK)
         WEEK = []
       }
@@ -94,7 +94,7 @@ export default function Table({ data }: { data: TableProps }) {
             const selected = equalDates(day.date, selectedDay)
 
             return (
-              <S.TableCell
+              <Styled.TableCell
                 key={`day-${dayIndex}`}
                 className={`${selected ? 'selected' : ''} ${
                   getMonthName(day.date) !== getMonthName(selectedDay)
@@ -113,7 +113,7 @@ export default function Table({ data }: { data: TableProps }) {
                   selected={selected}
                   handleSelect={handleSelectDate}
                 />
-              </S.TableCell>
+              </Styled.TableCell>
             )
           })}
         </MuiTableRow>
@@ -121,8 +121,8 @@ export default function Table({ data }: { data: TableProps }) {
     })
 
   return (
-    <S.Table data-testid="table">
-      <S.TableHead>
+    <Styled.Table data-testid="table">
+      <Styled.TableHead>
         <MuiTableRow>
           <MuiTableCell colSpan={4}>
             <Stack
@@ -131,7 +131,7 @@ export default function Table({ data }: { data: TableProps }) {
               alignItems="center"
               margin="0"
             >
-              <S.Button
+              <Styled.Button
                 data-testid="back-month"
                 onClick={() =>
                   dispatch(
@@ -140,11 +140,11 @@ export default function Table({ data }: { data: TableProps }) {
                 }
               >
                 <ArrowBackIos />
-              </S.Button>
+              </Styled.Button>
               <Typography variant="body1" fontWeight={700} fontSize="2rem">
                 {getMonthName(selectedDay)}
               </Typography>
-              <S.Button
+              <Styled.Button
                 data-testid="ahead-month"
                 onClick={() =>
                   dispatch(
@@ -153,7 +153,7 @@ export default function Table({ data }: { data: TableProps }) {
                 }
               >
                 <ArrowForwardIos />
-              </S.Button>
+              </Styled.Button>
             </Stack>
           </MuiTableCell>
           <MuiTableCell colSpan={3}>
@@ -163,7 +163,7 @@ export default function Table({ data }: { data: TableProps }) {
               alignItems="center"
               margin="0"
             >
-              <S.Button
+              <Styled.Button
                 data-testid="back-year"
                 onClick={() =>
                   dispatch(
@@ -172,18 +172,18 @@ export default function Table({ data }: { data: TableProps }) {
                 }
               >
                 <ArrowBackIos />
-              </S.Button>
+              </Styled.Button>
               <Typography variant="body1" fontWeight={700} fontSize="2rem">
                 {getYear(selectedDay)}
               </Typography>
-              <S.Button
+              <Styled.Button
                 data-testid="ahead-year"
                 onClick={() =>
                   dispatch(changeDay(deserializeDate(addYears(selectedDay, 1))))
                 }
               >
                 <ArrowForwardIos />
-              </S.Button>
+              </Styled.Button>
             </Stack>
           </MuiTableCell>
         </MuiTableRow>
@@ -196,8 +196,8 @@ export default function Table({ data }: { data: TableProps }) {
           <MuiTableCell className="weekday">Fri</MuiTableCell>
           <MuiTableCell className="weekday">Sat</MuiTableCell>
         </MuiTableRow>
-      </S.TableHead>
+      </Styled.TableHead>
       <MuiTableBody>{MonthDays()}</MuiTableBody>
-    </S.Table>
+    </Styled.Table>
   )
 }

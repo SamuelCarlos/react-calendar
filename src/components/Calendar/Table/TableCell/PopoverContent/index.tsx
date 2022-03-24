@@ -23,8 +23,8 @@ import PlacesAutocomplete from './PlacesAutocomplete'
 import Button from 'components/Button'
 import { useAppDispatch } from 'app/hooks'
 
-import * as S from './styles'
-import { useGetWeatherForDayQuery } from 'components/Calendar/weather-api-slice'
+import * as Styled from './styles'
+import { useLazyGetWeatherForDayQuery } from 'components/Calendar/weather-api-slice'
 
 interface PopoverContentProps {
   selectedDay: Date
@@ -45,14 +45,17 @@ const BLANK_REMINDER_FORM: ReminderCreatePayload = {
 }
 
 const ReminderListItem = ({ data, onClick }: ReminderListItemProps) => {
-  const {
-    data: weatherData,
-    error,
-    isLoading: isLoadingWeather
-  } = useGetWeatherForDayQuery({
-    city: data.city,
-    date: new Date(data.date).toISOString()
-  })
+  const [trigger, result] = useLazyGetWeatherForDayQuery()
+
+  const { isLoading: isLoadingWeather, data: weatherData } = result
+
+  useEffect(() => {
+    const hasLocation = data.city.name.length > 0
+
+    if (hasLocation)
+      trigger({ city: data.city, date: new Date(data.date).toISOString() })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.city.name])
 
   return (
     <Stack
@@ -77,7 +80,7 @@ const ReminderListItem = ({ data, onClick }: ReminderListItemProps) => {
         margin="0"
         minWidth="80px"
       >
-        {isLoadingWeather ? (
+        {weatherData && isLoadingWeather ? (
           <CircularProgress size="10px" />
         ) : data.city.name ? (
           <>
@@ -144,9 +147,9 @@ const ReminderListItem = ({ data, onClick }: ReminderListItemProps) => {
         alignItems="center"
         margin="0"
       >
-        <S.Button className="edit" onClick={() => onClick(data)}>
+        <Styled.Button className="edit" onClick={() => onClick(data)}>
           <Edit fontSize="small" color="action" />
-        </S.Button>
+        </Styled.Button>
       </Stack>
     </Stack>
   )
@@ -176,7 +179,7 @@ const ReminderList = ({
             onClick={(reminder) => handleSelectReminder(reminder)}
           />
         ))}
-      <S.Button onClick={() => handleChangeContent('form')}>
+      <Styled.Button onClick={() => handleChangeContent('form')}>
         <Stack
           direction="row"
           justifyContent="flex-start"
@@ -192,7 +195,7 @@ const ReminderList = ({
             Add new reminder
           </Typography>
         </Stack>
-      </S.Button>
+      </Styled.Button>
     </Box>
   )
 }
