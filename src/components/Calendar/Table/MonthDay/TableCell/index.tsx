@@ -6,7 +6,7 @@ import {
   Popover,
   ClickAwayListener
 } from '@mui/material'
-import { DayData } from '..'
+import { DayData } from '../..'
 import PopoverContent from './PopoverContent'
 
 import * as Styled from './styles'
@@ -55,7 +55,7 @@ export default function TableCell({
             justifySelf="flex-start"
             margin="5px 0 0 5px"
           >
-            <Typography variant="h6">{date.getDate()}</Typography>
+            <Typography variant="body1">{date.getDate()}</Typography>
           </Stack>
           {reminders && (
             <Box

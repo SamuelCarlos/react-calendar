@@ -4,7 +4,7 @@ import usePlacesAutocomplete, {
 } from 'use-places-autocomplete'
 import useOnclickOutside from 'react-cool-onclickoutside'
 import React, { useEffect, useState } from 'react'
-import { CityData } from 'components/Calendar/calendar-slice'
+import { CityData } from 'redux/calendar-slice'
 import {
   Grid,
   List,

@@ -14,7 +14,6 @@ import {
   getMonthName,
   subtractDays,
   getYear,
-  isMinor,
   subtractMonths,
   addMonths,
   subtractYears,
@@ -22,11 +21,11 @@ import {
 } from 'utils/dates'
 import { addDays } from 'date-fns'
 import { useAppDispatch } from 'app/hooks'
-import { changeDay, Reminder } from '../calendar-slice'
-import TableCell from './TableCell'
+import { changeDay, Reminder } from '../../../redux/calendar-slice'
 import { ArrowBackIos, ArrowForwardIos } from '@mui/icons-material'
 
 import * as Styled from './styles'
+import MonthDay from './MonthDay'
 
 const NUMBER_OF_WEEKS = 6
 const DAYS_IN_A_WEEK = 7
@@ -47,11 +46,6 @@ export default function Table({ data }: { data: TableProps }) {
   const { selectedDay, reminders } = data
 
   const dispatch = useAppDispatch()
-
-  const handleSelectDate = (date: Date) => {
-    const ISODate = deserializeDate(date)
-    dispatch(changeDay(ISODate))
-  }
 
   useEffect(() => {
     const firstMonthDay = firstDayOfMonth(selectedDay)
@@ -86,40 +80,6 @@ export default function Table({ data }: { data: TableProps }) {
     setMonth([...MONTH])
   }, [selectedDay, reminders])
 
-  const MonthDays = () =>
-    month.map((week, weekIndex) => {
-      return (
-        <MuiTableRow key={`week-${weekIndex}`}>
-          {week.map((day, dayIndex) => {
-            const selected = equalDates(day.date, selectedDay)
-
-            return (
-              <Styled.TableCell
-                key={`day-${dayIndex}`}
-                className={`${selected ? 'selected' : ''} ${
-                  getMonthName(day.date) !== getMonthName(selectedDay)
-                    ? 'dark'
-                    : 'light'
-                }`}
-              >
-                <TableCell
-                  data={{
-                    date: day.date,
-                    reminders: day.reminders?.sort((a, b) => {
-                      if (isMinor(new Date(a.date), new Date(b.date))) return -1
-                      return 1
-                    })
-                  }}
-                  selected={selected}
-                  handleSelect={handleSelectDate}
-                />
-              </Styled.TableCell>
-            )
-          })}
-        </MuiTableRow>
-      )
-    })
-
   return (
     <Styled.Table data-testid="table">
       <Styled.TableHead>
@@ -132,6 +92,7 @@ export default function Table({ data }: { data: TableProps }) {
               margin="0"
             >
               <Styled.Button
+                aria-label="Back one month button"
                 data-testid="back-month"
                 onClick={() =>
                   dispatch(
@@ -145,6 +106,7 @@ export default function Table({ data }: { data: TableProps }) {
                 {getMonthName(selectedDay)}
               </Typography>
               <Styled.Button
+                aria-label="Ahead one month button"
                 data-testid="ahead-month"
                 onClick={() =>
                   dispatch(
@@ -164,6 +126,7 @@ export default function Table({ data }: { data: TableProps }) {
               margin="0"
             >
               <Styled.Button
+                aria-label="Back one year button"
                 data-testid="back-year"
                 onClick={() =>
                   dispatch(
@@ -177,6 +140,7 @@ export default function Table({ data }: { data: TableProps }) {
                 {getYear(selectedDay)}
               </Typography>
               <Styled.Button
+                aria-label="Ahead one year button"
                 data-testid="ahead-year"
                 onClick={() =>
                   dispatch(changeDay(deserializeDate(addYears(selectedDay, 1))))
@@ -197,7 +161,15 @@ export default function Table({ data }: { data: TableProps }) {
           <MuiTableCell className="weekday">Sat</MuiTableCell>
         </MuiTableRow>
       </Styled.TableHead>
-      <MuiTableBody>{MonthDays()}</MuiTableBody>
+      <MuiTableBody>
+        {month.map((week, weekIndex) => (
+          <MonthDay
+            key={`week-${weekIndex}`}
+            selectedDay={selectedDay}
+            week={week}
+          />
+        ))}
+      </MuiTableBody>
     </Styled.Table>
   )
 }

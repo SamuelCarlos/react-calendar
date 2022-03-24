@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { CityData } from 'components/Calendar/calendar-slice'
+import { CityData } from 'redux/calendar-slice'
 import { WeatherData } from './weather.type'
 
 export interface GetWeather {

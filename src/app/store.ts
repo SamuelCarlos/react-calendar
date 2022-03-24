@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import calendarReducer from 'components/Calendar/calendar-slice'
+import calendarReducer from 'redux/calendar-slice'
 import { combineReducers } from 'redux'
 import {
   persistReducer,
@@ -11,7 +11,7 @@ import {
   REGISTER
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import { weatherApi } from 'components/Calendar/weather-api-slice'
+import { weatherApi } from 'api/weather-api-slice'
 
 const persistConfig = {
   key: 'root',

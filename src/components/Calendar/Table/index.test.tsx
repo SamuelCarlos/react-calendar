@@ -2,7 +2,7 @@ import Table from './'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { store } from 'app/store'
-import { returnToToday } from '../calendar-slice'
+import { returnToToday } from '../../../redux/calendar-slice'
 
 describe('Table', () => {
   describe('<Table /> component', () => {

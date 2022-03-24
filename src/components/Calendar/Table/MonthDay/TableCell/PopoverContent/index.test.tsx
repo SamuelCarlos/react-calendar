@@ -1,11 +1,8 @@
-import { ReminderForm } from '.'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { store } from 'app/store'
-import {
-  addReminder,
-  purgeCalendarData
-} from 'components/Calendar/calendar-slice'
+import { addReminder, purgeCalendarData } from 'redux/calendar-slice'
+import ReminderForm from './ReminderForm'
 
 const INITIAL_REMINDER_DATA = {
   city: { name: 'Cariacica' },
