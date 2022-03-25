@@ -6,7 +6,7 @@
 
 ## How to run
 
-1. Make sure to have Node installed (v14.16.1 ahead)
+1. Make sure to have Node installed (v16.14.0 ahead)
 2. Create a file called .env which content matches .env.example and set up the variables values (if you don't have access to that, please, contact the responsibles for this project).
 3. Run `npm install` or `yarn install` to install all dependencies.
 4. Run `npm start` or `yarn start` to run the app locally.
@@ -44,4 +44,4 @@ First of all I had a very good time working on this project. It was awesome and 
 ## External API's
 
 - **Google API:** to get places autocomplete and lat lng.
-- **Visual Crossing's weather API:** I opted for this one because I could use lag/ln or city name to get weather data.
+- **Visual Crossing's weather API:** I opted for this one because I could use lat/lng or city name to get weather data.
