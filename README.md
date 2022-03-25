@@ -7,7 +7,7 @@
 ## Live deploy
 
 This project is builded and deployed on the following url:
-[react-calendar][https://samuelxavier-react-calendar.netlify.app/calendar]
+https://samuelxavier-react-calendar.netlify.app/calendar
 
 ## How to run
 
