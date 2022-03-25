@@ -4,6 +4,11 @@
 
 # React Challenge
 
+## Live deploy
+
+This project is builded and deployed on the following url:
+`https://samuelxavier-react-calendar.netlify.app/calendar`
+
 ## How to run
 
 1. Make sure to have Node installed (v16.14.0 ahead)
